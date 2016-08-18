@@ -13,7 +13,7 @@ if (!databaseUri) {
 
 //iOS Push Notification certificate
 var devCertPath = path.resolve(__dirname, 'TuvaSwedenAB-push.p12');
-console.log('devCertPath')
+console.log(devCertPath);
 // var pushConfig = {'ios': 
 //   {
 //    pfx: devCertPath, // P12 file only
@@ -31,7 +31,7 @@ var api = new ParseServer({
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
   push: {
     ios: {
-      pfx: path.resolve(__dirname, '/TuvaSwedenAB-push.p12')//devCertPath, // P12 file only
+      pfx: devCertPath, // P12 file only
       passphrase: '1+2Is2&.',
       bundleId: 'tuvaswedenab.TUVA2',
       production: false
