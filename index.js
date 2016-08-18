@@ -14,13 +14,12 @@ if (!databaseUri) {
 //iOS Push Notification certificate
 var devCertPath = path.resolve(__dirname, 'TuvaSwedenAB-push.p12');
 
-var pushConfig = {'ios': [
+var pushConfig = {'ios': 
   {
    pfx: devCertPath, // P12 file only
    bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
    production: false // dev certificate
   }
- ]
 }; 
 
 var api = new ParseServer({
