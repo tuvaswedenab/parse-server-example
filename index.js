@@ -17,6 +17,7 @@ var devCertPath = path.resolve(__dirname, 'TuvaSwedenAB-push.p12');
 var pushConfig = {'ios': 
   {
    pfx: devCertPath, // P12 file only
+   passphrase: '1+2Is3&.',
    bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
    production: false // dev certificate
   }
