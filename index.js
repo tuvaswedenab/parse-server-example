@@ -14,14 +14,14 @@ if (!databaseUri) {
 //iOS Push Notification certificate
 var devCertPath = path.resolve(__dirname, 'TuvaSwedenAB-push.p12');
 
-var pushConfig = {'ios': 
-  {
-   pfx: devCertPath, // P12 file only
-   passphrase: '1+2Is3&.',
-   bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
-   production: false // dev certificate
-  }
-}; 
+// var pushConfig = {'ios': 
+//   {
+//    pfx: devCertPath, // P12 file only
+//    passphrase: '1+2Is3&.',
+//    bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
+//    production: false // dev certificate
+//   }
+// }; 
 
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
@@ -29,7 +29,14 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'myAppId',
   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
-  push: pushConfig,
+  push: {
+    ios: {
+      pfx: __dirname + '/TuvaSwedenAB-push.p12'//devCertPath, // P12 file only
+      passphrase: '1+2Is2&.',
+      bundleId: 'tuvaswedenab.TUVA2',
+      production: false
+    }
+  },
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
