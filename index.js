@@ -11,6 +11,18 @@ if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
 }
 
+//iOS Push Notification certificate
+var devCertPath = path.resolve(__dirname, 'TuvaSwedenAB-push.p12');
+
+var pushConfig = {'ios': [
+  {
+   pfx: devCertPath, // P12 file only
+   bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
+   production: false // dev certificate
+  }
+ ]
+}; 
+
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
@@ -20,10 +32,13 @@ var api = new ParseServer({
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
+  push: pushConfig,
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
+
+
 
 var app = express();
 
