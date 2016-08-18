@@ -12,7 +12,7 @@ if (!databaseUri) {
 }
 
 //iOS Push Notification certificate
-var devCertPath = path.resolve(__dirname, '/certificate/TuvaSwedenAB-push.p12');
+var devCertPath = path.resolve(__dirname, 'certificate/TuvaSwedenAB-push.p12');
 
 var pushConfig = {'ios': 
   {
