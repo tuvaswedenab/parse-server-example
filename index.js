@@ -54,7 +54,8 @@ var api = new ParseServer({
       //   apiKey: '...'
       // },
       ios: {
-        pfx: devCertPath,
+        //pfx: devCertPath,
+        pfx: __dirname + '/certificate/TuvaSwedenAB-push.p12',
         passphrase: '1+2Is3&.', // optional password to your p12/PFX
         bundleId: 'tuvaswedenab.TUVA2',
         production: false
