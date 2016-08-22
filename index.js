@@ -12,13 +12,13 @@ if (!databaseUri) {
 }
 
 //iOS Push Notification certificate
-var devCertPath = path.resolve(__dirname, 'certificate/TuvaSwedenAB-push.p12');
+var devCertPath = path.resolve(__dirname, 'certificate/beta.tuvaswedenab.TUVA2.p12');
 
 var pushConfig = {"ios": 
   {
    "pfx": devCertPath, // P12 file only
-   "passphrase": '1+2Is3&.',
-   "bundleId": 'tuvaswedenab.TUVA2',  // change to match bundleId
+   "passphrase": '1+2Is3&.!',
+   "bundleId": 'beta.tuvaswedenab.TUVA',  // change to match bundleId
    "production": false // dev certificate
   }
 }; 
