@@ -18,7 +18,7 @@ var pushConfig = {"ios":
   {
    "pfx": devCertPath, // P12 file only
    "passphrase": '1+2Is3&.!',
-   "bundleId": 'beta.tuvaswedenab.TUVA',  // change to match bundleId
+   "bundleId": 'beta.tuvaswedenab.TUVA2',  // change to match bundleId
    "production": false // dev certificate
   }
 }; 
