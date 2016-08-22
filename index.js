@@ -24,11 +24,11 @@ var pushConfig = {'ios':
 }; 
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://heroku_j2v2gl3h:mql4nh8clagja05dbdningr3mc@ds023315.mlab.com:23315/heroku_j2v2gl3h',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID || 'XMg-3JA-9BC-enM',
+  masterKey: process.env.MASTER_KEY || 'g7r-xxA-btb-hx6', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'http://tuva.herokuapp.com/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
