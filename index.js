@@ -12,50 +12,20 @@ if (!databaseUri) {
 }
 
 //iOS Push Notification certificate
-var devCertPath = path.resolve(__dirname, 'certificate/TuvaSwedenAB-push.p12');
-
-// var pushConfig = {ios: 
-//   {
-//    pfx: devCertPath, // P12 file only
-//    passphrase: '1+2Is3&.',
-//    bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
-//    production: false // dev certificate
-//   }
-// }; 
-// var pushConfig = {'ios': 
-//   {
-//    pfx: devCertPath, // P12 file only
-//    passphrase: '1+2Is3&.',
-//    bundleId: 'tuvaswedenab.TUVA2',  // change to match bundleId
-//    production: false // dev certificate
-//   }
-// }; 
-
-// var api = new ParseServer({
-//   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
-//   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-//   appId: process.env.APP_ID || 'myAppId',
-//   masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-//   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
-//   push: pushConfig,
-//   liveQuery: {
-//     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
-//   }
-// });
+var devCertPath = path.resolve(__dirname, './certificate/TuvaSwedenAB-push.p12');
 
 var api = new ParseServer({
-    databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+    databaseURI: databaseUri || 'mongodb://heroku_j2v2gl3h:mql4nh8clagja05dbdningr3mc@ds023315.mlab.com:23315/heroku_j2v2gl3h',//'mongodb://localhost:27017/dev',
     cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-    appId: process.env.APP_ID || 'myAppId',
-    masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+    appId: process.env.APP_ID || 'XMg-3JA-9BC-enM',
+    masterKey: process.env.MASTER_KEY || 'g7r-xxA-btb-hx6', //Add your master key here. Keep it secret!
     push: {
       // android: {
       //   senderId: '...',
       //   apiKey: '...'
       // },
       ios: {
-        //pfx: devCertPath,
-        pfx: __dirname + '/certificate/TuvaSwedenAB-push.p12',
+        pfx: devCertPath,
         passphrase: '1+2Is3&.', // optional password to your p12/PFX
         bundleId: 'tuvaswedenab.TUVA2',
         production: false
