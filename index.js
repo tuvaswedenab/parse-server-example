@@ -15,6 +15,10 @@ if (!databaseUri) {
 var devCertPath = path.resolve(__dirname, './certificate/TuvaSwedenAB-push.p12');
 console.log(devCertPath);
 var pushConfig = { 
+    android: {
+        senderId: '131416714675',
+        apiKey: 'AIzaSyD2b79zFPpgWLjHmlXz8smqAX34r0_y94o'
+    },
     ios: {
       pfx: devCertPath, // P12 file only
       passphrase: '1+2Is2&.',
