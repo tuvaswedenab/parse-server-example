@@ -92,6 +92,7 @@ var createNewInstallation = function(request, response) {
 }
 
 function getUserPointer(request) {
+    Parse.Cloud.useMasterKey();
     var User = Parse.Object.extend("TuvaUser");
     var user = new User();
     user.id = request.params.user;
