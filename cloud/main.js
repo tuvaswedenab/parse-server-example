@@ -40,6 +40,8 @@ Parse.Cloud.define("UpdateInstallation", function(request, response) {
                     installation.set("timeZone", request.params.timeZone);
                     installation.set("localeIdentifier", request.params.localeIdentifier);
                     installation.set("appVersion", request.params.appVersion);
+                    installation.set("user", request.params.user);
+                    installation.set("channels", request.params.channels);
 
                     installation.save(null, {
                         success: function(installation) {
@@ -78,6 +80,8 @@ var createNewInstallation = function(request, response) {
     installation.set("timeZone", request.params.timeZone);
     installation.set("localeIdentifier", request.params.localeIdentifier);
     installation.set("appVersion", request.params.appVersion);
+    installation.set("user", request.params.user);
+    installation.set("channels", request.params.channels);
     installation.save(null, {
         success: function(installation) {
             response.success(installation);
