@@ -24,7 +24,7 @@ Parse.Cloud.define("UpdateInstallation", function(request, response) {
         });
     } else {
         var query = new Parse.Query(Parse.Installation);
-        query.equalTo("objectId", request.params.objectId);
+        query.equalTo("installationId", request.params.installationId);
         query.first({
             success: function(installation) {
                 if  (installation) {
