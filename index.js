@@ -21,7 +21,7 @@ var pushConfig = {
     },
     ios: {
       pfx: devCertPath, // P12 file only
-      passphrase: '1+2Is2&.',
+      passphrase: '1+2Is3&.',
       bundleId: 'tuvaswedenab.TUVA2',
       production: false
     }
