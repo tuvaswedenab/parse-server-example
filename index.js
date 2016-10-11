@@ -23,7 +23,7 @@ var pushConfig = {
       pfx: devCertPath, // P12 file only
       passphrase: '1+2Is3&.',
       bundleId: 'com.tuvasweden.TUVA',
-      production: false
+      production: true
     }
   };
 
