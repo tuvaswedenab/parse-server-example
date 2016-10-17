@@ -5,41 +5,6 @@ var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 
-//MAILGUN ADAPTER
-var Mailgun = require('mailgun-js');
-
-var SimpleMailgunAdapter = mailgunOptions => {
-  if (!mailgunOptions || !mailgunOptions.apiKey || !mailgunOptions.domain || !mailgunOptions.fromAddress) {
-    throw 'SimpleMailgunAdapter requires an API Key, domain, and fromAddress.';
-  }
-  var mailgun = Mailgun(mailgunOptions);
-
-  var sendMail = mail => {
-    var data = {
-      from: mailgunOptions.fromAddress,
-      to: mail.to,
-      subject: mail.subject,
-      text: mail.text,
-    }
-
-    return new Promise((resolve, reject) => {
-      mailgun.messages().send(data, (err, body) => {
-        if (typeof err !== 'undefined') {
-          reject(err);
-        }
-        resolve(body);
-      });
-    });
-  }
-
-  return Object.freeze({
-    sendMail: sendMail
-  });
-}
-
-module.exports = SimpleMailgunAdapter
-//END MAILGUN ADAPTER
-
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
 if (!databaseUri) {
@@ -71,7 +36,26 @@ var api = new ParseServer({
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  
+  //mailgun settings
+  verifyUserEmails: true,
+  emailVerifyTokenValidityDuration: 2 * 60 * 60,
+  preventLoginWithUnverifiedEmail: false,
+  publicServerURL: 'http://tuva-development.herokuapp.com/parse',
+  appName: 'Tuva',
+  emailAdapter: {
+    module: 'parse-server-simple-mailgun-adapter',
+    options: {
+      // The address that your emails come from
+      fromAddress: 'support@tuva.co',
+      // Your domain from mailgun.com
+      domain: 'mg.tuva.co',
+      // Your API key from mailgun.com
+      apiKey: 'key-27096ecafcccb6b4ad80971cbb5df90e',
+    }
   }
+
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
@@ -107,3 +91,38 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
+
+//MAILGUN ADAPTER
+var Mailgun = require('mailgun-js');
+
+var SimpleMailgunAdapter = mailgunOptions => {
+  if (!mailgunOptions || !mailgunOptions.apiKey || !mailgunOptions.domain || !mailgunOptions.fromAddress) {
+    throw 'SimpleMailgunAdapter requires an API Key, domain, and fromAddress.';
+  }
+  var mailgun = Mailgun(mailgunOptions);
+
+  var sendMail = mail => {
+    var data = {
+      from: mailgunOptions.fromAddress,
+      to: mail.to,
+      subject: mail.subject,
+      text: mail.text,
+    }
+
+    return new Promise((resolve, reject) => {
+      mailgun.messages().send(data, (err, body) => {
+        if (typeof err !== 'undefined') {
+          reject(err);
+        }
+        resolve(body);
+      });
+    });
+  }
+
+  return Object.freeze({
+    sendMail: sendMail
+  });
+}
+
+module.exports = SimpleMailgunAdapter
+//END MAILGUN ADAPTER
