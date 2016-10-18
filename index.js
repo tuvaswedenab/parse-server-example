@@ -28,11 +28,11 @@ var pushConfig = {
   };
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://tuva.master:rfz-YRR-kw9-o2q@ds147965.mlab.com:47965/tuva2-data',
+  databaseURI: databaseUri || 'mongodb://tuva.master:5EyrZdpQ5H3EgcR@ds053106-a0.mlab.com:53106,ds053106-a1.mlab.com:53106/tuva2-production?replicaSet=rs-ds053106',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'm5h36jkXMduu4gj',
-  masterKey: process.env.MASTER_KEY || 't0437ylgDzwbF7w', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://tuva-development.herokuapp.com/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID || 'XMg-3JA-9BC-enM',
+  masterKey: process.env.MASTER_KEY || 'g7r-xxA-btb-hx6', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'http://tuva.herokuapp.com/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
@@ -42,7 +42,7 @@ var api = new ParseServer({
   verifyUserEmails: true,
   emailVerifyTokenValidityDuration: 2 * 60 * 60,
   preventLoginWithUnverifiedEmail: false,
-  publicServerURL: 'http://tuva-development.herokuapp.com/parse',
+  publicServerURL: 'http://tuva.herokuapp.com/parse',
   appName: 'Tuva',
   emailAdapter: {
     module: 'parse-server-simple-mailgun-adapter',
@@ -88,7 +88,7 @@ app.use(mountPath, api);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
+  res.status(200).send('I dream of being a website -MASTER BRANCH-.  Please star the parse-server repo on GitHub!');
 });
 
 // There will be a test page available on the /test path of your server url

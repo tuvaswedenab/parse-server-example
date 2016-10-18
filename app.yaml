@@ -3,9 +3,9 @@ vm: true
 
 env_variables:
   # --REQUIRED--
-  DATABASE_URI: mongodb://tuva.master:rfz-YRR-kw9-o2q@ds147965.mlab.com:47965/tuva2-data
-  APP_ID: m5h36jkXMduu4gj
-  MASTER_KEY: t0437ylgDzwbF7w
+  DATABASE_URI: mongodb://tuva.master:5EyrZdpQ5H3EgcR@ds053106-a0.mlab.com:53106,ds053106-a1.mlab.com:53106/tuva2-production?replicaSet=rs-ds053106
+  APP_ID: XMg-3JA-9BC-enM
+  MASTER_KEY: g7r-xxA-btb-hx6
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse
