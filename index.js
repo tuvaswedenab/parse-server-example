@@ -55,7 +55,7 @@ var api = new ParseServer({
       apiKey: 'key-27096ecafcccb6b4ad80971cbb5df90e',
 
       templates: {
-        passwrodResetEmail: {
+        passwordResetEmail: {
           subject: 'Begärt nytt lösenord för %appname%',
           //pathPlainText: resolve(__dirname, 'path/to/templates/password_reset_email.txt'),
           //pathHtml: resolve(__dirname, 'path/to/templates/password_reset_email.html'),
