@@ -56,21 +56,20 @@ var api = new ParseServer({
 
       templates: {
         passwordResetEmail: {
-          subject: 'Begärt nytt lösenord för %appname%',
-          //pathPlainText: resolve(__dirname, 'path/to/templates/password_reset_email.txt'),
-          //pathHtml: resolve(__dirname, 'path/to/templates/password_reset_email.html'),
-          body: 'Hey,\n\nDu har begärt att återställning av lösenordet för %appname%.\n\nKlicka här för att återställa det:\n%link%'
+            subject: 'Begärt nytt lösenord för Tuva',
+            //pathPlainText: path.join(__dirname, 'email-templates/password_reset_email.txt'),
+            pathHtml: path.join(__dirname, 'mailgun-template/password_reset_email.html')
+            //callback: (user) => {}
         },
         verificationEmail: {
-          subject: 'Verifiera din E-post för %appname%',
-          //pathPlainText: resolve(__dirname, 'path/to/templates/password_reset_email.txt'),
-          //pathHtml: resolve(__dirname, 'path/to/templates/verification_email.html'),
-          body: 'Hej,\n\nVänligen bekräfta E-postadressen för %email% med %appname%\n\nKlicka här för att verifiera:\n%link%'
+            subject: 'Confirm your account',
+            pathPlainText: path.join(__dirname, 'email-templates/verification_email.txt'),
+            pathHtml: path.join(__dirname, 'email-templates/verification_email.html'),
+            callback: (user) => {}
         }
       }
     }
   }
-
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
