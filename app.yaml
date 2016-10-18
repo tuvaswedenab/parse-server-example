@@ -3,9 +3,9 @@ vm: true
 
 env_variables:
   # --REQUIRED--
-  DATABASE_URI: mongodb://localhost:27017/dev
-  APP_ID: <your-app-id>
-  MASTER_KEY: <your-master-key>
+  DATABASE_URI: mongodb://tuva.master:rfz-YRR-kw9-o2q@ds147965.mlab.com:47965/tuva2-data
+  APP_ID: m5h36jkXMduu4gj
+  MASTER_KEY: t0437ylgDzwbF7w
   # --OPTIONAL--
   # FILE_KEY: <your-file-key>
   # PARSE_MOUNT: /parse

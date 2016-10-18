@@ -28,14 +28,47 @@ var pushConfig = {
   };
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://tuva.master:rfz-YRR-kw9-o2q@ds147965.mlab.com:47965/tuva2-data',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID || 'm5h36jkXMduu4gj',
+  masterKey: process.env.MASTER_KEY || 't0437ylgDzwbF7w', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'http://tuva-development.herokuapp.com/parse',  // Don't forget to change to https if needed
   push: pushConfig,
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
+  },
+  
+  //mailgun settings
+  verifyUserEmails: true,
+  emailVerifyTokenValidityDuration: 2 * 60 * 60,
+  preventLoginWithUnverifiedEmail: false,
+  publicServerURL: 'http://tuva-development.herokuapp.com/parse',
+  appName: 'Tuva',
+  emailAdapter: {
+    module: 'parse-server-simple-mailgun-adapter',
+    options: {
+      // The address that your emails come from
+      fromAddress: 'support@tuva.co',
+      // Your domain from mailgun.com
+      domain: 'mg.tuva.co',
+      // Your API key from mailgun.com
+      apiKey: 'key-27096ecafcccb6b4ad80971cbb5df90e',
+
+      templates: {
+        passwordResetEmail: {
+            subject: 'Begärt nytt lösenord för Tuva',
+            //pathPlainText: path.join(__dirname, 'email-templates/password_reset_email.txt'),
+            pathHtml: path.join(__dirname, 'mailgun-template/password_reset_email.html')
+            //callback: (user) => {}
+        },
+        verificationEmail: {
+            subject: 'Confirm your account',
+            pathPlainText: path.join(__dirname, 'email-templates/verification_email.txt'),
+            pathHtml: path.join(__dirname, 'email-templates/verification_email.html'),
+            callback: (user) => {}
+        }
+      }
+    }
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
@@ -72,3 +105,38 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
+
+//MAILGUN ADAPTER
+var Mailgun = require('mailgun-js');
+
+var SimpleMailgunAdapter = mailgunOptions => {
+  if (!mailgunOptions || !mailgunOptions.apiKey || !mailgunOptions.domain || !mailgunOptions.fromAddress) {
+    throw 'SimpleMailgunAdapter requires an API Key, domain, and fromAddress.';
+  }
+  var mailgun = Mailgun(mailgunOptions);
+
+  var sendMail = mail => {
+    var data = {
+      from: mailgunOptions.fromAddress,
+      to: mail.to,
+      subject: mail.subject,
+      text: mail.text,
+    }
+
+    return new Promise((resolve, reject) => {
+      mailgun.messages().send(data, (err, body) => {
+        if (typeof err !== 'undefined') {
+          reject(err);
+        }
+        resolve(body);
+      });
+    });
+  }
+
+  return Object.freeze({
+    sendMail: sendMail
+  });
+}
+
+module.exports = SimpleMailgunAdapter
+//END MAILGUN ADAPTER
