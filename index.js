@@ -53,6 +53,16 @@ var api = new ParseServer({
       domain: 'mg.tuva.co',
       // Your API key from mailgun.com
       apiKey: 'key-27096ecafcccb6b4ad80971cbb5df90e',
+
+      // Verification email subject
+      verificationSubject: 'Please verify your e-mail for %appname%',
+      // Verification email body
+      verificationBody: 'Hi,\n\nYou are being asked to confirm the e-mail address %email% with %appname%\n\nClick here to confirm it:\n%link%',
+
+      // Password reset email subject
+      passwordResetSubject: 'Password Reset Request for %appname%',
+      // Password reset email body
+      passwordResetBody: 'Hey,\n\nDu har begärt att återställning av lösenordet för %appname%.\n\nKlicka här för att återställa det:\n%link%'
     }
   }
 
