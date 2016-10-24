@@ -129,6 +129,39 @@ Parse.Cloud.define("changeUserPassword", function(request, response) {
 
 // Sends a push notification when a Application is stored 
 // ---- SENDS TO THE GROUP ADMIN ----
+// Parse.Cloud.afterSave("Application", function(request) {
+// 	// Is here to prevent relations to call on update
+// 	if (request.object.existed()) {
+// 		return;
+// 	}
+
+// 	var application = request.object;
+// 	var query = new Parse.Query(Parse.Object.extend("Group"));
+
+// 	query.get(application.get('group').id).then(function(group) {
+// 		// The admin of this group will receive a push notification
+// 		var channelName = "user-" + group.get("admin").id;
+// 		// Creates a message string to notify user
+// 		var messageText = "You've got an applicant to " + group.get("name");
+
+// 		Parse.Push.send({
+// 			channels: [channelName],
+// 			data: {
+// 				alert: messageText,
+// 				badge: "Increment",
+// 				id: application.id,
+// 				sound: "default",
+// 				title: "New applicant!",
+// 				type: "Application"
+// 			}
+// 		}, { useMasterKey: true }).then(function() {
+// 			console.log("APPLICATION -> Push notification sent to channel -> " + channelName);
+// 		}, function(error) {
+// 			throw "Got an error " + error.code + " : " + error.message;
+// 		});
+// 	});
+// });
+
 Parse.Cloud.afterSave("Application", function(request) {
 	// Is here to prevent relations to call on update
 	if (request.object.existed()) {
@@ -144,8 +177,12 @@ Parse.Cloud.afterSave("Application", function(request) {
 		// Creates a message string to notify user
 		var messageText = "You've got an applicant to " + group.get("name");
 
+		var queryInstallation = new Parse.Query(Parse.Installation);
+		queryInstallation.contains('channels', channelName);
+		queryInstallation.exists('deviceToken');
+
 		Parse.Push.send({
-			channels: [channelName],
+			where: queryInstallation,
 			data: {
 				alert: messageText,
 				badge: "Increment",
@@ -253,6 +290,42 @@ Parse.Cloud.afterSave("Comment", function(request) {
 
 });
 
+
+
+// Parse.Cloud.afterSave("Invitation", function(request) {
+// 	// Is here to prevent relations to call on update
+// 	if (request.object.existed()) {
+// 		return;
+// 	}
+
+// 	var invitation = request.object;
+// 	var query = new Parse.Query(Parse.Object.extend("Group"));
+
+// 	//Get the group of invitation
+// 	query.get(invitation.get("group").id).then(function(group) {
+// 		// The receiver of the push is the guest
+// 		var channelName = "user-" + invitation.get("guest").id;
+// 		// Message string to notify user
+// 		var messageText = "You received an invitation to " + group.get("name");
+
+// 		Parse.Push.send({
+// 			channels: [channelName],
+// 			data: {
+// 				alert: messageText,
+// 				badge: "Increment",
+// 				id: invitation.id,
+// 				sound: "default",
+// 				title: "New invitation!",
+// 				type: "Invitation"
+// 			}
+// 		}, { useMasterKey: true}).then(function() {
+// 		    console.log("INVITATION -> Push notification sent to channel -> " + channelName)
+// 		}, function(error) {
+// 		    throw "Got an error " + error.code + " : " + error.message;
+// 		});
+// 	});
+// });
+
 Parse.Cloud.afterSave("Invitation", function(request) {
 	// Is here to prevent relations to call on update
 	if (request.object.existed()) {
@@ -269,8 +342,12 @@ Parse.Cloud.afterSave("Invitation", function(request) {
 		// Message string to notify user
 		var messageText = "You received an invitation to " + group.get("name");
 
+		var queryInstallation = new Parse.Query(Parse.Installation);
+		queryInstallation.contains('channels', channelName);
+		queryInstallation.exists('deviceToken');
+
 		Parse.Push.send({
-			channels: [channelName],
+			where: queryInstallation,
 			data: {
 				alert: messageText,
 				badge: "Increment",
@@ -281,46 +358,6 @@ Parse.Cloud.afterSave("Invitation", function(request) {
 			}
 		}, { useMasterKey: true}).then(function() {
 		    console.log("INVITATION -> Push notification sent to channel -> " + channelName)
-		}, function(error) {
-		    throw "Got an error " + error.code + " : " + error.message;
-		});
-	});
-});
-
-// Sends a push notification when a Post is stored 
-// ---- SENDS TO ALL MEMBERS OF THE GROUP ----
-Parse.Cloud.afterSave("Post", function(request) {
-	// Is here to prevent relations to call on update
-	if (request.object.existed()) {
-		return;
-	}
-
-	var post = request.object;
-	var query = new Parse.Query(Parse.Object.extend("TuvaUser"));
-
-	// Get the post's user
-	query.get(post.get('creator').id).then(function(user) {
-		// Everyone in this group will receiver a push notification
-		var channelName = "group-" + post.get('group').id;
-		// Message string to notify user
-		var messageText = user.get('firstName') + " " + user.get('lastName') + " added a post.";
-
-		var queryInstallation = new Parse.Query(Parse.Installation);
-		queryInstallation.contains('channels', channelName);
-		queryInstallation.exists('deviceToken');
-
-		Parse.Push.send({
-			where: queryInstallation,
-		    data: {
-		      	alert: messageText,
-		      	badge: "Increment",
-		      	id: post.id,
-		      	sound: "default",
-		      	title: "New post!",
-		      	type: "Post"
-		    }
-		}, { useMasterKey: true }).then(function() {
-		    console.log("POST -> Push notification sent to channel -> " + channelName)
 		}, function(error) {
 		    throw "Got an error " + error.code + " : " + error.message;
 		});
@@ -362,3 +399,43 @@ Parse.Cloud.afterSave("Post", function(request) {
 // 		});
 // 	});
 // });
+
+// Sends a push notification when a Post is stored 
+// ---- SENDS TO ALL MEMBERS OF THE GROUP ----
+Parse.Cloud.afterSave("Post", function(request) {
+	// Is here to prevent relations to call on update
+	if (request.object.existed()) {
+		return;
+	}
+
+	var post = request.object;
+	var query = new Parse.Query(Parse.Object.extend("TuvaUser"));
+
+	// Get the post's user
+	query.get(post.get('creator').id).then(function(user) {
+		// Everyone in this group will receiver a push notification
+		var channelName = "group-" + post.get('group').id;
+		// Message string to notify user
+		var messageText = user.get('firstName') + " " + user.get('lastName') + " added a post.";
+
+		var queryInstallation = new Parse.Query(Parse.Installation);
+		queryInstallation.contains('channels', channelName);
+		queryInstallation.exists('deviceToken');
+
+		Parse.Push.send({
+			where: queryInstallation,
+		    data: {
+		      	alert: messageText,
+		      	badge: "Increment",
+		      	id: post.id,
+		      	sound: "default",
+		      	title: "New post!",
+		      	type: "Post"
+		    }
+		}, { useMasterKey: true }).then(function() {
+		    console.log("POST -> Push notification sent to channel -> " + channelName)
+		}, function(error) {
+		    throw "Got an error " + error.code + " : " + error.message;
+		});
+	});
+});
