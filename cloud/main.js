@@ -305,8 +305,12 @@ Parse.Cloud.afterSave("Post", function(request) {
 		// Message string to notify user
 		var messageText = user.get('firstName') + " " + user.get('lastName') + " added a post.";
 
+		var queryInstallation = new Parse.Query(Parse.Installation);
+		queryInstallation.contains('channels', channelName);
+		queryInstallation.exists('deviceToken');
+
 		Parse.Push.send({
-			channels: [channelName],
+			where: queryInstallation,
 		    data: {
 		      	alert: messageText,
 		      	badge: "Increment",
@@ -323,28 +327,38 @@ Parse.Cloud.afterSave("Post", function(request) {
 	});
 });
 
-/******** THIS IS OUT COMMENTED FOR NOW. AFTERSAVES FROM OTHER TABLES MAY COVER THIS FUNCTION ****/
-// Sends a push notification when a NotificationReceiver is stored
-// Parse.Cloud.afterSave("NotificationReceiver", function(request) {
-// 	var notificationReceiver = request.object;
-// 	// Create channel-name with the user id by adding "user-" to user id
-// 	var channelName = "user-" + notificationReceiver.get("receiver").id;
-// 	// Message string to notify user
-// 	var messageText = "You've got a personal message.";
+// Sends a push notification when a Post is stored 
+// ---- SENDS TO ALL MEMBERS OF THE GROUP ----
+// Parse.Cloud.afterSave("Post", function(request) {
+// 	// Is here to prevent relations to call on update
+// 	if (request.object.existed()) {
+// 		return;
+// 	}
 
-// 	Parse.Push.send({
-// 		channels: [channelName],
-// 		data: {
-// 			alert: messageText,
-// 			badge: "Increment",
-// 			id: notificationReceiver.id,
-// 			sound: "default",
-// 			title: "New notification!",
-// 			type: "NotificationReceiver"
-// 		}
-// 	}, { useMasterKey: true }).then(function() {
-// 		console.log("NOTIFICATIONRECEIVER -> Push notification sent to channel -> " + channelName);
-// 	}, function(error) {
-// 		throw "Got an error " + error.code + " : " + error.message;
+// 	var post = request.object;
+// 	var query = new Parse.Query(Parse.Object.extend("TuvaUser"));
+
+// 	// Get the post's user
+// 	query.get(post.get('creator').id).then(function(user) {
+// 		// Everyone in this group will receiver a push notification
+// 		var channelName = "group-" + post.get('group').id;
+// 		// Message string to notify user
+// 		var messageText = user.get('firstName') + " " + user.get('lastName') + " added a post.";
+
+// 		Parse.Push.send({
+// 			channels: [channelName],
+// 		    data: {
+// 		      	alert: messageText,
+// 		      	badge: "Increment",
+// 		      	id: post.id,
+// 		      	sound: "default",
+// 		      	title: "New post!",
+// 		      	type: "Post"
+// 		    }
+// 		}, { useMasterKey: true }).then(function() {
+// 		    console.log("POST -> Push notification sent to channel -> " + channelName)
+// 		}, function(error) {
+// 		    throw "Got an error " + error.code + " : " + error.message;
+// 		});
 // 	});
 // });
